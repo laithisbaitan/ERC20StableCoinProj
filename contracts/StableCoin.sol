@@ -3,8 +3,11 @@ pragma solidity 0.8.11;
 import { ERC20 } from "./ERC20.sol";
 import { DepositorCoin } from "./DepositorCoin.sol";
 import { Oracle } from "./Oracle.sol";
+import { WadLib } from "./WadLib.sol";
 
 contract StableCoin is ERC20{
+    using WadLib for uint256;
+
     DepositorCoin public depositorCoin;
     Oracle public oracle;
 
@@ -73,8 +76,8 @@ contract StableCoin is ERC20{
         }
 
         uint256 surplusInUsd = uint(deficitOrSurplusInUsd);
-        uint256 dpcInUsdPrice = _getDPCinUsdPrice(surplusInUsd);
-        uint256 mintDepositorCoinAmount = (msg.value * dpcInUsdPrice) / 
+        WadLib.Wad dpcInUsdPrice = _getDPCinUsdPrice(surplusInUsd);
+        uint256 mintDepositorCoinAmount = (msg.value.mulWad(dpcInUsdPrice)) / 
         oracle.getPrice();
 
         depositorCoin.mint(msg.sender, mintDepositorCoinAmount);
@@ -92,8 +95,8 @@ contract StableCoin is ERC20{
         require(deficitOrSurplusInUsd > 0, "STC: No funds to withdraw");
 
         uint256 surplusInUsd = uint256(deficitOrSurplusInUsd);
-        uint256 dpcInUsdPrice = _getDPCinUsdPrice(surplusInUsd);
-        uint256 refundingUsd = burnDepositorCoinAmount / dpcInUsdPrice;
+        WadLib.Wad dpcInUsdPrice = _getDPCinUsdPrice(surplusInUsd);
+        uint256 refundingUsd = burnDepositorCoinAmount.mulWad(dpcInUsdPrice);
         uint256 refundingEth = refundingUsd / oracle.getPrice();
 
         (bool success,) = msg.sender.call{value: refundingEth}("");
@@ -110,7 +113,7 @@ contract StableCoin is ERC20{
         return deficitOrSurplus;
     }
 
-    function _getDPCinUsdPrice(uint256 surplusInUsd)private view returns(uint256){
-        return depositorCoin.totalSupply() / surplusInUsd;
+    function _getDPCinUsdPrice(uint256 surplusInUsd)private view returns(WadLib.Wad){
+        return WadLib.fromFraction(depositorCoin.totalSupply(), surplusInUsd);
     }
 }
