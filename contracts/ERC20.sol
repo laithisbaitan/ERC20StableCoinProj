@@ -16,8 +16,6 @@ contract ERC20{
     constructor(string memory name_, string memory symbol_){
         name = name_;
         symbol = symbol_;
-
-        _mint(msg.sender, 100e18);
     }
 
     function decimals() external pure returns (uint8){

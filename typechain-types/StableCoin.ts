@@ -30,38 +30,50 @@ import type {
 
 export interface StableCoinInterface extends utils.Interface {
   functions: {
+    "INITIAL_COLLATERAL_RATIO_PERCENTAGE()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
     "burn(uint256)": FunctionFragment;
     "decimals()": FunctionFragment;
+    "depositCollateralBuffer()": FunctionFragment;
     "depositorCoin()": FunctionFragment;
     "feeRatePercentage()": FunctionFragment;
     "mint()": FunctionFragment;
     "name()": FunctionFragment;
+    "oracle()": FunctionFragment;
     "symbol()": FunctionFragment;
     "totalSupply()": FunctionFragment;
     "transfer(address,uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
+    "withdrawCollateralBuffer(uint256)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "INITIAL_COLLATERAL_RATIO_PERCENTAGE"
       | "allowance"
       | "approve"
       | "balanceOf"
       | "burn"
       | "decimals"
+      | "depositCollateralBuffer"
       | "depositorCoin"
       | "feeRatePercentage"
       | "mint"
       | "name"
+      | "oracle"
       | "symbol"
       | "totalSupply"
       | "transfer"
       | "transferFrom"
+      | "withdrawCollateralBuffer"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "INITIAL_COLLATERAL_RATIO_PERCENTAGE",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "allowance",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
@@ -80,6 +92,10 @@ export interface StableCoinInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "depositCollateralBuffer",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "depositorCoin",
     values?: undefined
   ): string;
@@ -89,6 +105,7 @@ export interface StableCoinInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "mint", values?: undefined): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
+  encodeFunctionData(functionFragment: "oracle", values?: undefined): string;
   encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "totalSupply",
@@ -106,12 +123,24 @@ export interface StableCoinInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>
     ]
   ): string;
+  encodeFunctionData(
+    functionFragment: "withdrawCollateralBuffer",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
 
+  decodeFunctionResult(
+    functionFragment: "INITIAL_COLLATERAL_RATIO_PERCENTAGE",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "burn", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "depositCollateralBuffer",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "depositorCoin",
     data: BytesLike
@@ -122,6 +151,7 @@ export interface StableCoinInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "mint", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "oracle", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "totalSupply",
@@ -130,6 +160,10 @@ export interface StableCoinInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "transfer", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "transferFrom",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "withdrawCollateralBuffer",
     data: BytesLike
   ): Result;
 
@@ -193,6 +227,10 @@ export interface StableCoin extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    INITIAL_COLLATERAL_RATIO_PERCENTAGE(
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     allowance(
       arg0: PromiseOrValue<string>,
       arg1: PromiseOrValue<string>,
@@ -217,6 +255,10 @@ export interface StableCoin extends BaseContract {
 
     decimals(overrides?: CallOverrides): Promise<[number]>;
 
+    depositCollateralBuffer(
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     depositorCoin(overrides?: CallOverrides): Promise<[string]>;
 
     feeRatePercentage(overrides?: CallOverrides): Promise<[BigNumber]>;
@@ -226,6 +268,8 @@ export interface StableCoin extends BaseContract {
     ): Promise<ContractTransaction>;
 
     name(overrides?: CallOverrides): Promise<[string]>;
+
+    oracle(overrides?: CallOverrides): Promise<[string]>;
 
     symbol(overrides?: CallOverrides): Promise<[string]>;
 
@@ -243,7 +287,16 @@ export interface StableCoin extends BaseContract {
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    withdrawCollateralBuffer(
+      burnDepositorCoinAmount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
   };
+
+  INITIAL_COLLATERAL_RATIO_PERCENTAGE(
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   allowance(
     arg0: PromiseOrValue<string>,
@@ -269,6 +322,10 @@ export interface StableCoin extends BaseContract {
 
   decimals(overrides?: CallOverrides): Promise<number>;
 
+  depositCollateralBuffer(
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   depositorCoin(overrides?: CallOverrides): Promise<string>;
 
   feeRatePercentage(overrides?: CallOverrides): Promise<BigNumber>;
@@ -278,6 +335,8 @@ export interface StableCoin extends BaseContract {
   ): Promise<ContractTransaction>;
 
   name(overrides?: CallOverrides): Promise<string>;
+
+  oracle(overrides?: CallOverrides): Promise<string>;
 
   symbol(overrides?: CallOverrides): Promise<string>;
 
@@ -296,7 +355,16 @@ export interface StableCoin extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  withdrawCollateralBuffer(
+    burnDepositorCoinAmount: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
+    INITIAL_COLLATERAL_RATIO_PERCENTAGE(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     allowance(
       arg0: PromiseOrValue<string>,
       arg1: PromiseOrValue<string>,
@@ -321,6 +389,8 @@ export interface StableCoin extends BaseContract {
 
     decimals(overrides?: CallOverrides): Promise<number>;
 
+    depositCollateralBuffer(overrides?: CallOverrides): Promise<void>;
+
     depositorCoin(overrides?: CallOverrides): Promise<string>;
 
     feeRatePercentage(overrides?: CallOverrides): Promise<BigNumber>;
@@ -328,6 +398,8 @@ export interface StableCoin extends BaseContract {
     mint(overrides?: CallOverrides): Promise<void>;
 
     name(overrides?: CallOverrides): Promise<string>;
+
+    oracle(overrides?: CallOverrides): Promise<string>;
 
     symbol(overrides?: CallOverrides): Promise<string>;
 
@@ -345,6 +417,11 @@ export interface StableCoin extends BaseContract {
       amount: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    withdrawCollateralBuffer(
+      burnDepositorCoinAmount: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
@@ -372,6 +449,10 @@ export interface StableCoin extends BaseContract {
   };
 
   estimateGas: {
+    INITIAL_COLLATERAL_RATIO_PERCENTAGE(
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     allowance(
       arg0: PromiseOrValue<string>,
       arg1: PromiseOrValue<string>,
@@ -396,6 +477,10 @@ export interface StableCoin extends BaseContract {
 
     decimals(overrides?: CallOverrides): Promise<BigNumber>;
 
+    depositCollateralBuffer(
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     depositorCoin(overrides?: CallOverrides): Promise<BigNumber>;
 
     feeRatePercentage(overrides?: CallOverrides): Promise<BigNumber>;
@@ -405,6 +490,8 @@ export interface StableCoin extends BaseContract {
     ): Promise<BigNumber>;
 
     name(overrides?: CallOverrides): Promise<BigNumber>;
+
+    oracle(overrides?: CallOverrides): Promise<BigNumber>;
 
     symbol(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -422,9 +509,18 @@ export interface StableCoin extends BaseContract {
       amount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    withdrawCollateralBuffer(
+      burnDepositorCoinAmount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    INITIAL_COLLATERAL_RATIO_PERCENTAGE(
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     allowance(
       arg0: PromiseOrValue<string>,
       arg1: PromiseOrValue<string>,
@@ -449,6 +545,10 @@ export interface StableCoin extends BaseContract {
 
     decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    depositCollateralBuffer(
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     depositorCoin(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     feeRatePercentage(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -458,6 +558,8 @@ export interface StableCoin extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    oracle(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -473,6 +575,11 @@ export interface StableCoin extends BaseContract {
       sender: PromiseOrValue<string>,
       recipient: PromiseOrValue<string>,
       amount: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    withdrawCollateralBuffer(
+      burnDepositorCoinAmount: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
