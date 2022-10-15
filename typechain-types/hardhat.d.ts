@@ -25,9 +25,17 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Lock__factory>;
     getContractFactory(
+      name: "Oracle",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Oracle__factory>;
+    getContractFactory(
       name: "StableCoin",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.StableCoin__factory>;
+    getContractFactory(
+      name: "WadLib",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.WadLib__factory>;
 
     getContractAt(
       name: "DepositorCoin",
@@ -45,10 +53,20 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.Lock>;
     getContractAt(
+      name: "Oracle",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Oracle>;
+    getContractAt(
       name: "StableCoin",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.StableCoin>;
+    getContractAt(
+      name: "WadLib",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.WadLib>;
 
     // default types
     getContractFactory(
